@@ -19,4 +19,13 @@ public interface ClubRepository extends JpaRepository<Club, Long> {
             LEFT JOIN college c ON pc.affiliation_id = c.college_id AND pc.affiliation_type = 2
             WHERE post_id = :postId""", nativeQuery = true)
     String findAffiliationName(@Param("postId") Long postId);
+
+    @Query(value = "SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END FROM post_club WHERE group_name = :recommendedClubName", nativeQuery = true)
+    Long existsByName(@Param("recommendedClubName") String recommendedClubName);
+
+    @Query(value = "SELECT post_id FROM post_club WHERE group_name = :groupName ORDER BY created_at DESC LIMIT 1", nativeQuery = true)
+    Long findLatestPostIdByGroupName(@Param("groupName") String groupName);
+
+    @Query(value = "SELECT title FROM post_club WHERE post_id = :postId", nativeQuery = true)
+    String findTitleByPostId(@Param("postId") Long postId);
 }

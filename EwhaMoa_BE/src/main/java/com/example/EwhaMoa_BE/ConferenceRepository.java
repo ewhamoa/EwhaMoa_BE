@@ -19,4 +19,10 @@ public interface ConferenceRepository extends JpaRepository<Conference, Long> {
             LEFT JOIN college c ON pc.affiliation_id = c.college_id AND pc.affiliation_type = 2
             WHERE post_id = :postId""", nativeQuery = true)
     String findAffiliationName(@Param("postId") Long postId);
+
+    @Query(value = "SELECT post_id FROM post_conference WHERE group_name = :groupName ORDER BY created_at DESC LIMIT 1", nativeQuery = true)
+    Long findLatestPostIdByGroupName(@Param("groupName") String recommendedClubName);
+
+    @Query(value = "SELECT title FROM post_conference WHERE post_id = :postId", nativeQuery = true)
+    String findTitleByPostId(@Param("postId") Long postId);
 }
