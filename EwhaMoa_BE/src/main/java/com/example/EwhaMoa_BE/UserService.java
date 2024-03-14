@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -45,8 +46,11 @@ public class UserService {
 
     // 닉네임 생성
     public String generate() {
-        String adjective = "임시";
-        String noun = "닉네임";
+        Random random = new Random();
+        String[] adjectives = {"기획하는","개발하는","디자인하는","발표하는","잉계에서자는","공대까지걸어가는","학관에서길잃은","조예대계단에게패배한","대강당으로달려가는","교육관에서팀플하는"};
+        String[] nouns = {"혜준이","예송이","연수","나은이","겨레","배꽃","화연","이대생","벗","뽀미","뽀삐","이화곰돌이","용용벗","음메벗","찍찍벗","토깽벗","호랭벗"};
+        String adjective = adjectives[random.nextInt(adjectives.length)];
+        String noun = nouns[random.nextInt(nouns.length)];
         return adjective + noun;
     }
 
