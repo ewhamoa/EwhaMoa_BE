@@ -23,7 +23,7 @@ public class MoaService {
     @Autowired
     private InquireRepository inquireRepository;
 
-    public ArrayList <RecommendationDto> recommend(String clubName) {
+    public ArrayList<RecommendationDto> recommend(String clubName) {
         ArrayList <RecommendationDto> responses = new ArrayList<>();
         // 1. 결과 가져오기
         String responseText = "";
@@ -52,6 +52,7 @@ public class MoaService {
             int exitCode = process.waitFor();
             if (exitCode != 0) {
                 log.info(errorMessage + "\n" + Integer.toString(exitCode));
+                return null;
             }
         } catch (IOException | InterruptedException e) {
             return null;
