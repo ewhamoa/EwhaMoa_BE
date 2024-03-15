@@ -28,10 +28,11 @@ public class MoaController {
         String message = chatDto.getMessage();
         // 2. 서비스로 작업 넘기기
         if (messageType == 0) {
-            ArrayList<?> responses = moaService.recommend(message);
-            return (responses != null)?
-                    ResponseEntity.status(HttpStatus.OK).body(responses):
-                    ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("답변 생성에 실패했습니다.");
+//            ArrayList<RecommendationDto> responses = moaService.recommend(message);
+//            return (responses != null)?
+//                    ResponseEntity.status(HttpStatus.OK).body(responses):
+//                    ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("답변 생성에 실패했습니다.");
+            return ResponseEntity.status(HttpStatus.OK).body(moaService.recommend(message));
         }
         else {
             session = request.getSession();
