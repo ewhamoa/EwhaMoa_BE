@@ -23,7 +23,7 @@ public class MoaService {
     @Autowired
     private InquireRepository inquireRepository;
 
-    public String recommend(String clubName) {
+    public ArrayList <RecommendationDto> recommend(String clubName) {
         ArrayList <RecommendationDto> responses = new ArrayList<>();
         // 1. 결과 가져오기
         String responseText = "";
@@ -51,40 +51,39 @@ public class MoaService {
             // 3. 종료 처리
             int exitCode = process.waitFor();
             if (exitCode != 0) {
-                return errorMessage + "\n" + Integer.toString(exitCode);
+                log.info(errorMessage + "\n" + Integer.toString(exitCode));
             }
         } catch (IOException | InterruptedException e) {
             return null;
         }
 
         // 2. 반환
-//        Boolean isClub;
-//        Long postId;
-//        String title;
-//        String[] recommendedClubs = responseText.substring(responseText.indexOf("(") + 1, responseText.lastIndexOf(")")).split(",\\s*");
-//        for (int i = 0; i < recommendedClubs.length; i++) {
-//            recommendedClubs[i] = recommendedClubs[i].replaceAll("'", "");
-//        }
-//        for (String recommendedClubName : recommendedClubs) {
-//            // 1. isClub
-//            if (clubRepository.existsByName(recommendedClubName) == 1) isClub = true;
-//            else isClub = false;
-//            // 2. postId
-//            if (isClub) {
-//                postId = clubRepository.findLatestPostIdByGroupName(recommendedClubName);
-//                title = clubRepository.findTitleByPostId(postId);
-//            }
-//            else {
-//                postId = conferenceRepository.findLatestPostIdByGroupName(recommendedClubName);
-//                title = conferenceRepository.findTitleByPostId(postId);
-//            }
-//            // 4. DTO 만들기
-//            RecommendationDto recommendationDto = new RecommendationDto(recommendedClubName, isClub, postId, title);
-//            responses.add(recommendationDto);
-//        }
-//
-//        return responses;
-        return "";
+        Boolean isClub;
+        Long postId;
+        String title;
+        String[] recommendedClubs = responseText.substring(responseText.indexOf("(") + 1, responseText.lastIndexOf(")")).split(",\\s*");
+        for (int i = 0; i < recommendedClubs.length; i++) {
+            recommendedClubs[i] = recommendedClubs[i].replaceAll("'", "");
+        }
+        for (String recommendedClubName : recommendedClubs) {
+            // 1. isClub
+            if (clubRepository.existsByName(recommendedClubName) == 1) isClub = true;
+            else isClub = false;
+            // 2. postId
+            if (isClub) {
+                postId = clubRepository.findLatestPostIdByGroupName(recommendedClubName);
+                title = clubRepository.findTitleByPostId(postId);
+            }
+            else {
+                postId = conferenceRepository.findLatestPostIdByGroupName(recommendedClubName);
+                title = conferenceRepository.findTitleByPostId(postId);
+            }
+            // 4. DTO 만들기
+            RecommendationDto recommendationDto = new RecommendationDto(recommendedClubName, isClub, postId, title);
+            responses.add(recommendationDto);
+        }
+
+        return responses;
     }
 
     public void inquire(Long userId, String message) {
