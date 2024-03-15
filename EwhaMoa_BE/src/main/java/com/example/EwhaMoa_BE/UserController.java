@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Map;
 
 @RestController
@@ -22,6 +23,8 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private BookmarkService bookmarkService;
     @Autowired
     private HttpSession session;
 
@@ -79,5 +82,17 @@ public class UserController {
         session = request.getSession();
         session.setAttribute("userId", user.getUserId());
         return ResponseEntity.status(HttpStatus.OK).header(session.getId()).body(user.getUserId());
+    }
+
+    @GetMapping("/bookmark")
+    public ResponseEntity<?> showBookmarks(HttpServletRequest request) {
+        // 1. DTO 요청
+        session = request.getSession();
+        Long userId = (Long) session.getAttribute("userId");
+        ArrayList<BookmarkPostDto> responses = bookmarkService.showBookmarks(userId);
+        // 2. 응답 처리
+        return (responses != null)?
+                ResponseEntity.status(HttpStatus.OK).body(responses):
+                ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("북마크가 없습니다.");
     }
 }

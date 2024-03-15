@@ -28,4 +28,7 @@ public interface ClubRepository extends JpaRepository<Club, Long> {
 
     @Query(value = "SELECT title FROM post_club WHERE post_id = :postId", nativeQuery = true)
     String findTitleByPostId(@Param("postId") Long postId);
+
+    @Query(value = "SELECT group_name FROM post_club WHERE post_id = :postId", nativeQuery = true)
+    String findGroupNameByPostId(@Param("postId") Long postId);
 }

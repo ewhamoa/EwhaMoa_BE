@@ -6,6 +6,16 @@
     </content>
   </component>
   <component name="FacetManager">
+    <facet type="jpa" name="JPA">
+      <configuration>
+        <setting name="validation-enabled" value="true" />
+        <setting name="provider-name" value="Hibernate" />
+        <datasource-mapping>
+          <factory-entry name="entityManagerFactory" value="b9982cf6-fed2-4bfd-bc43-490aaa3f7c3d" />
+        </datasource-mapping>
+        <naming-strategy-map />
+      </configuration>
+    </facet>
     <facet type="Python" name="Python">
       <configuration sdkName="Python 3.12" />
     </facet>
