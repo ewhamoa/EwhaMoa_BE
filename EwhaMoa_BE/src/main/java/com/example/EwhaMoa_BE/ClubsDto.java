@@ -17,4 +17,5 @@ public class ClubsDto {
     private String affiliationName;
     private Integer topic;
     private Integer grade;
+    private String imageLink;
 }

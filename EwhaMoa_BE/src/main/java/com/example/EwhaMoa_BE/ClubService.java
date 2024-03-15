@@ -29,7 +29,8 @@ public class ClubService {
                     club.getAffiliationType(),
                     clubRepository.findAffiliationName(club.getPostId()),
                     club.getTopic(),
-                    club.getGrade()
+                    club.getGrade(),
+                    club.getImageLink()
             );
             responses.add(clubsDto);
         }
@@ -51,7 +52,8 @@ public class ClubService {
                 club.getAffiliationType(),
                 clubRepository.findAffiliationName(club.getPostId()),
                 club.getTopic(),
-                club.getGrade()
+                club.getGrade(),
+                club.getImageLink()
         );
         return response;
     }

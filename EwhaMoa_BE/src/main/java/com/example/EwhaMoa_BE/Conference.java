@@ -32,4 +32,6 @@ public class Conference {
     private Integer topic;
     @Column(nullable = false)
     private Integer grade;
+    @Column
+    private String imageLink;
 }

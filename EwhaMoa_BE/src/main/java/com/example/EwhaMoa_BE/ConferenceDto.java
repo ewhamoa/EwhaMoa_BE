@@ -18,4 +18,5 @@ public class ConferenceDto {
     private String affiliationName;
     private Integer topic;
     private Integer grade;
+    private String imageLink;
 }

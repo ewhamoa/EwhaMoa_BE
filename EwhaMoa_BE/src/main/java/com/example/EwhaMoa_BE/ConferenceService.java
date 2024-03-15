@@ -29,7 +29,8 @@ public class ConferenceService {
                     conference.getAffiliationType(),
                     conferenceRepository.findAffiliationName(conference.getPostId()),
                     conference.getTopic(),
-                    conference.getGrade()
+                    conference.getGrade(),
+                    conference.getImageLink()
             );
             responses.add(conferencesDto);
         }
@@ -50,7 +51,8 @@ public class ConferenceService {
                 conference.getAffiliationType(),
                 conferenceRepository.findAffiliationName(conference.getPostId()),
                 conference.getTopic(),
-                conference.getGrade()
+                conference.getGrade(),
+                conference.getImageLink()
         );
         return response;
     }
