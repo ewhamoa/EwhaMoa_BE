@@ -71,6 +71,9 @@ public class ConferenceController {
 
     @DeleteMapping("/main/conference/{postId}/delete")
     public ResponseEntity<?> deletePost(@PathVariable(name="postId") Long postId) {
-        return null;
+        Conference response = conferenceService.deletePost(postId);
+        return (response != null)?
+                ResponseEntity.status(HttpStatus.OK).build():
+                ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("삭제하려는 게시글이 없습니다.");
     }
 }

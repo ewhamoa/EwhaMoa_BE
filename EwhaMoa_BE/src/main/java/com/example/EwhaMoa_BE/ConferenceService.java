@@ -116,4 +116,11 @@ public class ConferenceService {
         Conference updated = conferenceRepository.save(target);
         return updated;
     }
+
+    public Conference deletePost(Long postId) {
+        Conference target = conferenceRepository.findById(postId).orElse(null);
+        if (target == null) return null;
+        conferenceRepository.delete(target);
+        return target;
+    }
 }
