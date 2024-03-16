@@ -36,9 +36,11 @@ public class ConferenceController {
 
     // 특정 학회 홍보글 조회 API
     @GetMapping("/main/conference/{postId}")
-    public ResponseEntity<?> getConference(@PathVariable Long postId) {
+    public ResponseEntity<?> getConference(@PathVariable(name="postId") Long postId, HttpServletRequest request) {
         // 1. 필요한 DTO 가져오기
-        ConferenceDto response = conferenceService.getConference(postId);
+        session = request.getSession();
+        Long userId = (Long) session.getAttribute("userId");
+        ConferenceDto response = conferenceService.getConference(postId, userId);
         // 2. 응답 처리
         return (response != null)?
                 ResponseEntity.status(HttpStatus.OK).body(response):

@@ -12,6 +12,8 @@ import java.util.List;
 public class ConferenceService {
     @Autowired
     private ConferenceRepository conferenceRepository;
+    @Autowired
+    private BookmarkRepository bookmarkRepository;
 
     // 전체 동아리 조회
     public List<ConferencesDto> getConferences() {
@@ -37,10 +39,12 @@ public class ConferenceService {
         return responses;
     }
 
-    public ConferenceDto getConference(Long postId) {
+    public ConferenceDto getConference(Long postId, Long userId) {
         // 1. 엔티티 불러오기
         Conference conference = conferenceRepository.findById(postId).orElse(null);
         // 2. DTO로 변경
+        Long checkBookmark = bookmarkRepository.existsByUserAndPostAndIsClub(userId, postId, 0);
+        boolean isBookmarked = (checkBookmark == 1);
         ConferenceDto response = new ConferenceDto(
                 conference.getPostId(),
                 conference.getGroupName(),
@@ -52,7 +56,8 @@ public class ConferenceService {
                 conferenceRepository.findAffiliationName(conference.getPostId()),
                 conference.getTopic(),
                 conference.getGrade(),
-                conference.getImageLink()
+                conference.getImageLink(),
+                isBookmarked
         );
         return response;
     }

@@ -12,6 +12,8 @@ import java.util.List;
 public class ClubService {
     @Autowired
     private ClubRepository clubRepository;
+    @Autowired
+    private BookmarkRepository bookmarkRepository;
 
     // 전체 동아리 조회
     public List<ClubsDto> getClubs() {
@@ -38,10 +40,12 @@ public class ClubService {
     }
 
     // 특정 동아리 조회
-    public ClubDto getClub(Long postId) {
+    public ClubDto getClub(Long postId, Long userId) {
         // 1. 엔티티 불러오기
         Club club = clubRepository.findById(postId).orElse(null);
         // 2. DTO로 변경
+        Long checkBookmark = bookmarkRepository.existsByUserAndPostAndIsClub(userId, postId, 1);
+        boolean isBookmarked = (checkBookmark == 1);
         ClubDto response = new ClubDto(
                 club.getPostId(),
                 club.getGroupName(),
@@ -53,7 +57,8 @@ public class ClubService {
                 clubRepository.findAffiliationName(club.getPostId()),
                 club.getTopic(),
                 club.getGrade(),
-                club.getImageLink()
+                club.getImageLink(),
+                isBookmarked
         );
         return response;
     }
