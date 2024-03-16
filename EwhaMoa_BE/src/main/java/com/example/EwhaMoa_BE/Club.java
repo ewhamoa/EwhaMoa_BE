@@ -14,6 +14,8 @@ public class Club {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
+    @Column
+    private Long userId;
     @Column(nullable = false)
     private String groupName;
     @Column(nullable = false)
