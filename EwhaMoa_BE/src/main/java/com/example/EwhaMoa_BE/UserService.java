@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -13,6 +15,10 @@ import java.util.Random;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ClubRepository clubRepository;
+    @Autowired
+    private ConferenceRepository conferenceRepository;
 
     // 회원가입
     public User signup(UserLoginDto userLoginDto) throws NoSuchAlgorithmException {
@@ -90,5 +96,46 @@ public class UserService {
                 user.getEmail()
         );
         return response;
+    }
+
+    public ArrayList<MyPostDto> showMyPosts(Long userId) {
+        ArrayList<MyPostDto> responses = new ArrayList<>();
+        // 1. 동아리 추가
+        List<Club> clubs = clubRepository.findAllByUser(userId); // 엔티티 불러오기
+        for (Club club : clubs) {
+            MyPostDto myPostDto = new MyPostDto(
+                    true,
+                    club.getPostId(),
+                    club.getTitle(),
+                    club.getBody(),
+                    club.getCreatedAt(),
+                    club.getDue(),
+                    club.getAffiliationType(),
+                    clubRepository.findAffiliationName(club.getPostId()),
+                    club.getTopic(),
+                    club.getGrade(),
+                    club.getImageLink()
+            );
+            responses.add(myPostDto);
+        }
+        // 2. 학회 추가
+        List<Conference> conferences = conferenceRepository.findAllByUser(userId); // 엔티티 불러오기
+        for (Conference conference : conferences) {
+            MyPostDto myPostDto = new MyPostDto(
+                    false,
+                    conference.getPostId(),
+                    conference.getTitle(),
+                    conference.getBody(),
+                    conference.getCreatedAt(),
+                    conference.getDue(),
+                    conference.getAffiliationType(),
+                    conferenceRepository.findAffiliationName(conference.getPostId()),
+                    conference.getTopic(),
+                    conference.getGrade(),
+                    conference.getImageLink()
+            );
+            responses.add(myPostDto);
+        }
+        return responses;
     }
 }
