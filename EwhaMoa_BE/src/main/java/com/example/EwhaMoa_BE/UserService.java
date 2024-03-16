@@ -79,4 +79,16 @@ public class UserService {
         // 3. 해시값 리턴
         return stringBuffer.toString();
     }
+
+    public ProfileDto showMyProfile(Long userId) {
+        // 1. 엔티티 불러오기
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null) return null;
+        // 2. DTO 생성
+        ProfileDto response = new ProfileDto(
+                user.getNickname(),
+                user.getEmail()
+        );
+        return response;
+    }
 }
