@@ -96,4 +96,25 @@ public class ClubService {
         clubRepository.save(club);
         return club;
     }
+
+    public Club updatePost(Long postId, ClubUpdateDto dto) {
+        Club target = clubRepository.findById(postId).orElse(null);
+        if (target == null) return null;
+
+        target.setGroupName(dto.getGroupName());
+        target.setTitle(dto.getTitle());
+        target.setBody(dto.getBody());
+        target.setDue(dto.getDue());
+        target.setAffiliationType(dto.getAffiliationType());
+        Integer affiliationId = null;
+        if (dto.getAffiliationType() == 1) affiliationId = departmentRepository.findIdByName(dto.getAffiliationName());
+        if (dto.getAffiliationType() == 2) affiliationId = collegeRepository.findIdByName(dto.getAffiliationName());
+        target.setAffiliationId(affiliationId);
+        target.setTopic(dto.getTopic());
+        target.setGrade(dto.getGrade());
+        target.setImageLink(dto.getImageLink());
+
+        Club updated = clubRepository.save(target);
+        return updated;
+    }
 }

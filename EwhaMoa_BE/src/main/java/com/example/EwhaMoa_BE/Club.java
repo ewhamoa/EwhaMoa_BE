@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name="post_club")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 public class Club {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
