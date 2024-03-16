@@ -36,4 +36,7 @@ public interface ConferenceRepository extends JpaRepository<Conference, Long> {
 
     @Query(value = "SELECT * FROM post_conference WHERE user_id = :userId", nativeQuery = true)
     List<Conference> findAllByUser(@Param("userId") Long userId);
+
+    @Query(value = "SELECT user_id FROM post_conference WHERE post_id = :postId", nativeQuery = true)
+    Long findUserIdByPostId(@Param("postId") Long postId);
 }

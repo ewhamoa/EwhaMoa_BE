@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public class ConferenceDto {
     private Long postId;
+    private Long userId;
     private String groupName;
     private String title;
     private String body;

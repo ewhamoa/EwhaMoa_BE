@@ -21,7 +21,7 @@ public class ConferenceService {
     @Autowired
     private DepartmentRepository departmentRepository;
 
-    // 전체 동아리 조회
+    // 전체 학회 조회
     public List<ConferencesDto> getConferences() {
         // 1. 엔티티 불러오기
         List<Conference> conferences = conferenceRepository.findAll();
@@ -45,14 +45,17 @@ public class ConferenceService {
         return responses;
     }
 
+    // 특정 학회 조회
     public ConferenceDto getConference(Long postId, Long userId) {
         // 1. 엔티티 불러오기
         Conference conference = conferenceRepository.findById(postId).orElse(null);
         // 2. DTO로 변경
         Long checkBookmark = bookmarkRepository.existsByUserAndPostAndIsClub(userId, postId, 0);
+        Long writerId = conferenceRepository.findUserIdByPostId(postId);
         boolean isBookmarked = (checkBookmark == 1);
         ConferenceDto response = new ConferenceDto(
                 conference.getPostId(),
+                writerId,
                 conference.getGroupName(),
                 conference.getTitle(),
                 conference.getBody(),

@@ -52,8 +52,10 @@ public class ClubService {
         // 2. DTO로 변경
         Long checkBookmark = bookmarkRepository.existsByUserAndPostAndIsClub(userId, postId, 1);
         boolean isBookmarked = (checkBookmark == 1);
+        Long writerId = clubRepository.findUserIdByPostId(postId);
         ClubDto response = new ClubDto(
                 club.getPostId(),
+                writerId,
                 club.getGroupName(),
                 club.getTitle(),
                 club.getBody(),

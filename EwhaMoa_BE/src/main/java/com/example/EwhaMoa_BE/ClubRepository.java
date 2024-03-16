@@ -39,4 +39,7 @@ public interface ClubRepository extends JpaRepository<Club, Long> {
 
     @Query(value = "SELECT * FROM post_club WHERE user_id = :userId", nativeQuery = true)
     List<Club> findAllByUser(@Param("userId") Long userId);
+
+    @Query(value = "SELECT user_id FROM post_club WHERE post_id = :postId", nativeQuery = true)
+    Long findUserIdByPostId(@Param("postId") Long postId);
 }
