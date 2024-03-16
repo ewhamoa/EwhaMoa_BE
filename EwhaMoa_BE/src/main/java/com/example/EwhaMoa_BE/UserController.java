@@ -84,8 +84,20 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).header(session.getId()).body(user.getUserId());
     }
 
-    @GetMapping("/bookmark")
-    public ResponseEntity<?> showBookmarks(HttpServletRequest request) {
+    @GetMapping("/user/profile")
+    public ResponseEntity<?> showMyProfile(HttpServletRequest request) {
+        // 1. DTO 받아오기
+        session = request.getSession();
+        Long userId = (Long) session.getAttribute("userId");
+        ProfileDto response = userService.showMyProfile(userId);
+        // 2. 응답 처리
+        return (response != null)?
+                ResponseEntity.status(HttpStatus.OK).body(response):
+                ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("프로필 불러오기에 실패했습니다.");
+    }
+
+    @GetMapping("/user/bookmark")
+    public ResponseEntity<?> showMyBookmarks(HttpServletRequest request) {
         // 1. DTO 요청
         session = request.getSession();
         Long userId = (Long) session.getAttribute("userId");
@@ -94,5 +106,13 @@ public class UserController {
         return (responses != null)?
                 ResponseEntity.status(HttpStatus.OK).body(responses):
                 ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("북마크가 없습니다.");
+    }
+
+    @GetMapping("/user/posts")
+    public ResponseEntity<?> showMyPosts(HttpServletRequest request) {
+        // 1. DTO 요청
+        session = request.getSession();
+        Long userId = (Long) session.getAttribute("userId");
+        return null;
     }
 }
