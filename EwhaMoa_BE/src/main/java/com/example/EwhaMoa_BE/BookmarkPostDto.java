@@ -13,4 +13,5 @@ public class BookmarkPostDto {
     private boolean isClub;
     private Long postId;
     private String title;
+    private String imageLink;
 }

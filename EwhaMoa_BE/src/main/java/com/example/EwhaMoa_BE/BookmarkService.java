@@ -41,19 +41,23 @@ public class BookmarkService {
         for (Bookmark bookmark : bookmarks) {
             BookmarkPostDto bookmarkPostDto;
             if (bookmark.getIsClub() == 1) {
+                // 동아리의 경우
                 bookmarkPostDto = new BookmarkPostDto(
                         clubRepository.findGroupNameByPostId(bookmark.getPostId()),
                         true,
                         bookmark.getPostId(),
-                        clubRepository.findTitleByPostId(bookmark.getPostId())
+                        clubRepository.findTitleByPostId(bookmark.getPostId()),
+                        clubRepository.findImageLink(bookmark.getPostId())
                 );
             }
             else {
+                // 학회의 경우
                 bookmarkPostDto = new BookmarkPostDto(
                         conferenceRepository.findGroupNameByPostId(bookmark.getPostId()),
                         false,
                         bookmark.getPostId(),
-                        conferenceRepository.findTitleByPostId(bookmark.getPostId())
+                        conferenceRepository.findTitleByPostId(bookmark.getPostId()),
+                        conferenceRepository.findImageLink(bookmark.getPostId())
                 );
             }
             responses.add(bookmarkPostDto);

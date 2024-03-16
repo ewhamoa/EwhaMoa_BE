@@ -28,4 +28,7 @@ public interface ConferenceRepository extends JpaRepository<Conference, Long> {
 
     @Query(value = "SELECT group_name FROM post_conference WHERE post_id = :postId", nativeQuery = true)
     String findGroupNameByPostId(@Param("postId") Long postId);
+
+    @Query(value = "SELECT image_link FROM post_conference WHERE post_id = :postId", nativeQuery = true)
+    String findImageLink(@Param("postId") Long postId);
 }
