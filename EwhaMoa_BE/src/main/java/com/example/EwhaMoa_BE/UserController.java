@@ -107,12 +107,25 @@ public class UserController {
                 ResponseEntity.status(HttpStatus.OK).body(responses):
                 ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("북마크가 없습니다.");
     }
-
+    // isClub
+    //postId
+    //title
+    //body
+    //createdAt
+    //due
+    //affiliation_type
+    //affiliation_name
+    //topic
+    //grade
+    //imageLink
     @GetMapping("/user/posts")
     public ResponseEntity<?> showMyPosts(HttpServletRequest request) {
         // 1. DTO 요청
         session = request.getSession();
         Long userId = (Long) session.getAttribute("userId");
-        return null;
+        ArrayList<MyPostDto> responses = userService.showMyPosts(userId);
+        return (responses != null)?
+                ResponseEntity.status(HttpStatus.OK).body(responses):
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).body("북마크가 없습니다.");
     }
 }

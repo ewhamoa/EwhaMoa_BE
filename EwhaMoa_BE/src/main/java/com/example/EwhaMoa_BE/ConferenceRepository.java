@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ConferenceRepository extends JpaRepository<Conference, Long> {
     @Query(value = """
@@ -31,4 +33,7 @@ public interface ConferenceRepository extends JpaRepository<Conference, Long> {
 
     @Query(value = "SELECT image_link FROM post_conference WHERE post_id = :postId", nativeQuery = true)
     String findImageLink(@Param("postId") Long postId);
+
+    @Query(value = "SELECT * FROM post_conference WHERE user_id = :userId", nativeQuery = true)
+    List<Conference> findAllByUser(@Param("userId") Long userId);
 }
