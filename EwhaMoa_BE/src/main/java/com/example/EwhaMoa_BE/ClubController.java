@@ -61,7 +61,6 @@ public class ClubController {
     // 게시글 수정 API
     @PatchMapping("/main/club/{postId}/update")
     public ResponseEntity<?> updatePost(@PathVariable(name="postId") Long postId, @RequestBody ClubUpdateDto clubUpdateDto) {
-        // 1.
         Club response = clubService.updatePost(postId, clubUpdateDto);
         return (response != null)?
                 ResponseEntity.status(HttpStatus.OK).build():
@@ -70,6 +69,9 @@ public class ClubController {
 
     @DeleteMapping("/main/club/{postId}/delete")
     public ResponseEntity<?> deletePost(@PathVariable(name="postId") Long postId) {
-        return null;
+        Club response = clubService.deletePost(postId);
+        return (response != null)?
+                ResponseEntity.status(HttpStatus.OK).build():
+                ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("삭제하려는 게시글이 없습니다.");
     }
 }

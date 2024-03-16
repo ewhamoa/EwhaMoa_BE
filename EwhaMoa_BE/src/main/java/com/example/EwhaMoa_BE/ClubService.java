@@ -117,4 +117,11 @@ public class ClubService {
         Club updated = clubRepository.save(target);
         return updated;
     }
+
+    public Club deletePost(Long postId) {
+        Club target = clubRepository.findById(postId).orElse(null);
+        if (target == null) return null;
+        clubRepository.delete(target);
+        return target;
+    }
 }
