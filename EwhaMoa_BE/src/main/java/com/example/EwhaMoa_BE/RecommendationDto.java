@@ -12,4 +12,5 @@ public class RecommendationDto {
     private Boolean isClub;
     private Long postId;
     private String title;
+    private String imageLink;
 }

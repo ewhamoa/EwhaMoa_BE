@@ -62,6 +62,7 @@ public class MoaService {
         Boolean isClub;
         Long postId;
         String title;
+        String imageLink;
         String[] recommendedClubs = responseText.substring(responseText.indexOf("(") + 1, responseText.lastIndexOf(")")).split(",\\s*");
         for (int i = 0; i < recommendedClubs.length; i++) {
             recommendedClubs[i] = recommendedClubs[i].replaceAll("'", "");
@@ -74,13 +75,15 @@ public class MoaService {
             if (isClub) {
                 postId = clubRepository.findLatestPostIdByGroupName(recommendedClubName);
                 title = clubRepository.findTitleByPostId(postId);
+                imageLink = clubRepository.findImageLink(postId);
             }
             else {
                 postId = conferenceRepository.findLatestPostIdByGroupName(recommendedClubName);
                 title = conferenceRepository.findTitleByPostId(postId);
+                imageLink = conferenceRepository.findImageLink(postId);
             }
             // 4. DTO 만들기
-            RecommendationDto recommendationDto = new RecommendationDto(recommendedClubName, isClub, postId, title);
+            RecommendationDto recommendationDto = new RecommendationDto(recommendedClubName, isClub, postId, title, imageLink);
             responses.add(recommendationDto);
         }
 
