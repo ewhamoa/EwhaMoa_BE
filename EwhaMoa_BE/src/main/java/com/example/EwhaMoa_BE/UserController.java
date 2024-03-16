@@ -38,7 +38,12 @@ public class UserController {
     @PostMapping("/signup/check")
     public ResponseEntity<?> sendEmail(@RequestBody UserEmailDto userEmailDto) throws IOException {
         // 1. 이메일 발송 request
-        Map<String, Object> response = UnivCert.certify("e2cbf6e7-d65c-40d3-b528-9e3d67b65f83", userEmailDto.getEmail(), "이화여자대학교", true);
+        Map<String, Object> response = UnivCert.certify(
+                "e2cbf6e7-d65c-40d3-b528-9e3d67b65f83",
+                userEmailDto.getEmail(),
+                "이화여자대학교",
+                true
+        );
         // 2. response 확인
         Boolean value = (Boolean) response.get("success");
         return (value)?
@@ -50,7 +55,12 @@ public class UserController {
     @PostMapping("/signup/verify")
     public ResponseEntity<?> verifyEmail(@RequestBody UserVerifyDto userVerifyDto) throws IOException {
         // 1. 코드 확인 request
-        Map<String, Object> response = UnivCert.certifyCode("e2cbf6e7-d65c-40d3-b528-9e3d67b65f83", userVerifyDto.getEmail(), "이화여자대학교", userVerifyDto.getCode());
+        Map<String, Object> response = UnivCert.certifyCode(
+                "e2cbf6e7-d65c-40d3-b528-9e3d67b65f83",
+                userVerifyDto.getEmail(),
+                "이화여자대학교",
+                userVerifyDto.getCode()
+        );
         // 2. response 확인
         Boolean value = (Boolean) response.get("success");
         return (value)?

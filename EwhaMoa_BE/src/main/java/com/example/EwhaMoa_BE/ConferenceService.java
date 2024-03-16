@@ -22,12 +22,14 @@ public class ConferenceService {
     private DepartmentRepository departmentRepository;
 
     // 전체 학회 조회
-    public List<ConferencesDto> getConferences() {
+    public List<ConferencesDto> getConferences(Long userId) {
         // 1. 엔티티 불러오기
         List<Conference> conferences = conferenceRepository.findAll();
         // 2. DTO로 변경
         ArrayList<ConferencesDto> responses = new ArrayList<ConferencesDto>();
         for (Conference conference: conferences) {
+            Long checkBookmark = bookmarkRepository.existsByUserAndPostAndIsClub(userId, conference.getPostId(), 0);
+            Boolean isBookmarked = (checkBookmark == 1);
             ConferencesDto conferencesDto = new ConferencesDto(
                     conference.getPostId(),
                     conference.getTitle(),
@@ -38,7 +40,8 @@ public class ConferenceService {
                     conferenceRepository.findAffiliationName(conference.getPostId()),
                     conference.getTopic(),
                     conference.getGrade(),
-                    conference.getImageLink()
+                    conference.getImageLink(),
+                    isBookmarked
             );
             responses.add(conferencesDto);
         }
@@ -54,6 +57,7 @@ public class ConferenceService {
         Long writerId = conferenceRepository.findUserIdByPostId(postId);
         boolean isBookmarked = (checkBookmark == 1);
         ConferenceDto response = new ConferenceDto(
+                false,
                 conference.getPostId(),
                 writerId,
                 conference.getGroupName(),

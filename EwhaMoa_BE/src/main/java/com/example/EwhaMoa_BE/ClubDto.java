@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ClubDto {
+    private Boolean isClub;
     private Long postId;
     private Long userId;
     private String groupName;

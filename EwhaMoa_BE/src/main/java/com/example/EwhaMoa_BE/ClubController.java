@@ -22,9 +22,11 @@ public class ClubController {
 
     // 전체 동아리 홍보글 조회 API
     @GetMapping("/main/club")
-    public ResponseEntity<?> getClubs() {
+    public ResponseEntity<?> getClubs(HttpServletRequest request) {
         // 1. 필요한 DTO 가져오기
-        List<ClubsDto> responses = clubService.getClubs();
+        session = request.getSession();
+        Long userId = (Long) session.getAttribute("userId");
+        List<ClubsDto> responses = clubService.getClubs(userId);
         // 2. 응답 처리
         return (responses != null)?
                 ResponseEntity.status(HttpStatus.OK).body(responses):

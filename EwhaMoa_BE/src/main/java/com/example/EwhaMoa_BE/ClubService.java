@@ -22,12 +22,14 @@ public class ClubService {
     private DepartmentRepository departmentRepository;
 
     // 전체 동아리 조회
-    public List<ClubsDto> getClubs() {
+    public List<ClubsDto> getClubs(Long userId) {
         // 1. 엔티티 불러오기
         List<Club> clubs = clubRepository.findAll();
         // 2. DTO로 변경
         ArrayList<ClubsDto> responses = new ArrayList<ClubsDto>();
         for (Club club: clubs) {
+            Long checkBookmark = bookmarkRepository.existsByUserAndPostAndIsClub(userId, club.getPostId(), 1);
+            Boolean isBookmarked = (checkBookmark == 1);
             ClubsDto clubsDto = new ClubsDto(
                     club.getPostId(),
                     club.getTitle(),
@@ -38,7 +40,8 @@ public class ClubService {
                     clubRepository.findAffiliationName(club.getPostId()),
                     club.getTopic(),
                     club.getGrade(),
-                    club.getImageLink()
+                    club.getImageLink(),
+                    isBookmarked
             );
             responses.add(clubsDto);
         }
@@ -54,6 +57,7 @@ public class ClubService {
         boolean isBookmarked = (checkBookmark == 1);
         Long writerId = clubRepository.findUserIdByPostId(postId);
         ClubDto response = new ClubDto(
+                true,
                 club.getPostId(),
                 writerId,
                 club.getGroupName(),

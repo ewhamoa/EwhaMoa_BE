@@ -18,4 +18,5 @@ public class ConferencesDto {
     private Integer topic;
     private Integer grade;
     private String imageLink;
+    private Boolean isBookmarked;
 }
