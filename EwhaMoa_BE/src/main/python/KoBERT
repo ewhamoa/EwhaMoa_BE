@@ -1,0 +1,51 @@
+import pandas as pd
+import numpy as np
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from transformers import BertModel, BertTokenizer
+import torch
+
+
+data = pd.read_csv('/content/ewhaclub - table_동아리 (1).csv', low_memory=False)
+tfidf = TfidfVectorizer(max_features=768) 
+tfidf_matrix = tfidf.fit_transform(data['content'])
+
+# 코사인 유사도 계산
+cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
+
+# 동아리 이름과 인덱스 매핑
+title_to_index = dict(zip(data['group_name'], data.index))
+
+# KoBERT 모델 로드
+model_name = "monologg/kobert"
+tokenizer = BertTokenizer.from_pretrained(model_name)
+model = BertModel.from_pretrained(model_name)
+
+def get_recommendations(input_text, cosine_sim=cosine_sim, data=data):
+    # 입력 문장을 KoBERT 모델을 사용하여 임베딩
+    tokens = tokenizer(input_text, return_tensors="pt")
+    with torch.no_grad():
+        outputs = model(**tokens)
+    input_embedding = outputs.last_hidden_state.mean(dim=1).squeeze().numpy()
+
+    # 입력 텍스트와 가장 유사한 동아리 추천
+    sim_scores = cosine_similarity([input_embedding], tfidf_matrix)
+    sim_scores = sim_scores[0]
+    sim_scores = list(enumerate(sim_scores))
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+    sim_scores = sim_scores[:3]  # 상위 3개 추천
+    club_indices = [idx[0] for idx in sim_scores]
+    recommended_clubs = data['group_name'].iloc[club_indices].values
+    return tuple(recommended_clubs)
+
+# 사용자로부터 입력값 받기
+input_text = input("관심 키워드를 입력하세요 (콤마로 구분하여 여러 개 입력 가능합니다): ")
+keywords = input_text.split(",") 
+
+# 각 키워드에 대해 동아리 추천
+recommended_clubs = []
+for keyword in keywords:
+    recommended_clubs_tuple = get_recommendations(keyword.strip())
+    recommended_clubs.extend(recommended_clubs_tuple)
+
+print("당신의 관심사와 유사한 동아리:", recommended_clubs)
